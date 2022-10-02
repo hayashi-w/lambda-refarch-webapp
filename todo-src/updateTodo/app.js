@@ -29,6 +29,7 @@ const response = (statusCode, body, additionalHeaders) => ({
 });
 
 function isValidRequest(event) {
+  console.dir(event);
   let isIdValid =
     event !== null &&
     event.pathParameters !== null &&
@@ -81,7 +82,7 @@ exports.updateToDoItem = metricScope((metrics) => async (event, context) => {
   metrics.putDimensions({ Service: "updateTodo" });
   metrics.setProperty("RequestId", context.requestId);
 
-  if (!isValidRequest(context, event)) {
+  if (!isValidRequest(event)) {
     metrics.putMetric("Error", 1, Unit.Count);
     return response(400, { message: "Error: Invalid request" });
   }
